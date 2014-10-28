@@ -4,7 +4,7 @@ from postgresify import postgresify
 from envs.common import *
 
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
