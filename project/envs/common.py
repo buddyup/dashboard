@@ -1,3 +1,4 @@
+import os
 from os.path import abspath, join, dirname
 from sys import path
 from envs.keys_and_passwords import *
@@ -16,13 +17,13 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-EMAIL_SUBJECT_PREFIX = "[artechetype] "
+EMAIL_SUBJECT_PREFIX = "[buddyup-dashboard] "
 SERVER_EMAIL = 'skoczen@gmail.com'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'artechetype',
+        'NAME': 'buddyup-dashboard',
         'USER': 'skoczen',
         'PASSWORD': DB_PASSWORD,
         'HOST': '',
@@ -36,7 +37,7 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = ["artechetype-staging.herokuapp.com", "artechetype.herokuapp.com"]
+ALLOWED_HOSTS = ["buddyup-dashboard-staging.herokuapp.com", "buddyup-dashboard.herokuapp.com"]
 
 TIME_ZONE = 'America/Vancouver'
 
@@ -135,7 +136,7 @@ COMPRESS_ROOT = STATIC_ROOT
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 GOOGLE_ANALYTICS_PROPERTY_ID = ""
 GAUGES_SITE_ID = ""
-
+INTERCOM_API_KEY = os.environ["INTERCOM_API_KEY"]
 
 LOGGING = {
     'version': 1,

@@ -1,16 +1,15 @@
 from fabric.api import *
 
-env.PROJECT_NAME = "pdxschoolhack"
+env.PROJECT_NAME = "buddyup-dashboard"
 env.GITHUB_USER = "skoczen"
 env.GITHUB_REPO = env.PROJECT_NAME
 env.VIRTUALENV_NAME = env.PROJECT_NAME
 env.HEROKU_APP_NAME = env.PROJECT_NAME
-# If you're using https://github.com/ddollar/heroku-accounts
-env.HEROKU_ACCOUNT = "personal"
+env.HEROKU_ACCOUNT = "buddyup"
 
 env.SERVERS = {
-    "live": "artechetype",
-    "staging": "artechetype-staging",
+    "live": "buddyupdashboard",
+    "staging": "buddyupdashboard-staging",
 }
 
 
@@ -36,8 +35,8 @@ def wip():
 
 
 def setup_db():
-    local_venv("dropdb artechetype --if-exists -U skoczen")
-    local_venv("createdb artechetype -U skoczen")
+    local_venv("dropdb buddyup-dashboard --if-exists -U skoczen")
+    local_venv("createdb buddyup-dashboard -U skoczen")
     local_venv("./manage.py syncdb --noinput")
     local_venv("./manage.py loaddata dev_user.json")
     local_venv("./manage.py migrate")
