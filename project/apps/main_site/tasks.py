@@ -29,4 +29,6 @@ def get_data():
             if name in SEGMENT_MAPPING:
                 data[SEGMENT_MAPPING[name]] = value
 
+    data["recorded_at"] = datetime.datetime.now()
+
     d = DataPoint.objects.create(**data)
