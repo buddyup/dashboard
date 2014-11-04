@@ -133,7 +133,7 @@ BROKER_URL = 'redis://localhost:6379/6'
 CELERYBEAT_SCHEDULE = {
     'every-hour': {
         'task': 'get_data',
-        'schedule': crontab(minute=5)
+        'schedule': crontab(minute=8)
     }
 }
 CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
