@@ -126,9 +126,17 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 import djcelery
+from celery.schedules import crontab
 djcelery.setup_loader()
 BROKER_URL = 'redis://localhost:6379/6'
 
+CELERYBEAT_SCHEDULE = {
+    'every-hour': {
+        'task': 'get_data',
+        'schedule': crontab(minute=1)
+    }
+}
+CELERY_ACCEPT_CONTENT = ['pickle', 'json', 'msgpack', 'yaml']
 
 STATICFILES_EXCLUDED_APPS = []
 COMPRESS_ROOT = STATIC_ROOT
