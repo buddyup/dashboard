@@ -15,17 +15,20 @@ SEGMENT_MAPPING = {
     "Logged In": "num_authenticated",
 }
 
-@periodic_task(run_every=datetime.timedelta(hours=1))
-def get_data():
-    headers = {'content-type': 'application/json', 'accept': 'application/json'}
 
-    r = requests.get('https://api.intercom.io/counts?type=user&count=segment', data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
-    segments = r.json()["user"]["segment"]
+class DataCollectionTask(PeriodicTask):
+    run_every = timedelta(hours=1)
 
-    data = {}
-    for s in segments:
-        for name, value in s.items():
-            if name in SEGMENT_MAPPING:
-                data[SEGMENT_MAPPING[name]] = value
+    def run(self, **kwargs):
+        headers = {'content-type': 'application/json', 'accept': 'application/json'}
 
-    d = DataPoint.objects.create(**data)
+        r = requests.get('https://api.intercom.io/counts?type=user&count=segment', data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
+        segments = r.json()["user"]["segment"]
+
+        data = {}
+        for s in segments:
+            for name, value in s.items():
+                if name in SEGMENT_MAPPING:
+                    data[SEGMENT_MAPPING[name]] = value
+
+        d = DataPoint.objects.create(**data)
