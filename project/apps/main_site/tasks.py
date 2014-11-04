@@ -30,5 +30,6 @@ def get_data():
                 data[SEGMENT_MAPPING[name]] = value
 
     data["recorded_at"] = datetime.datetime.now()
+    print "Recording at %s" % data["recorded_at"]
 
     d = DataPoint.objects.create(**data)
