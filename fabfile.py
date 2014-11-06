@@ -35,7 +35,7 @@ def wip():
 
 def deploy():
     local("git push heroku master")
-    local("heroku run python manage.py syncdb --migrate")
+    local("heroku run python manage.py syncdb --migrate --settings=envs.live")
 
 def setup_db():
     local_venv("dropdb buddyup-dashboard --if-exists -U skoczen")
