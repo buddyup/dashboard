@@ -26,7 +26,6 @@ def get_data():
 
     r = requests.get('https://api.intercom.io/counts?type=user&count=segment', data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
     segments = r.json()["user"]["segment"]
-
     data = {}
     for s in segments:
         for name, value in s.items():
