@@ -33,6 +33,9 @@ def e2e():
 def wip():
     local("source ~/.virtualenvs/%(VIRTUALENV_NAME)s/bin/activate; manage.py test --attr=wip" % env)
 
+def deploy():
+    local("git push heroku master")
+    local("heroku run python manage.py syncdb --migrate")
 
 def setup_db():
     local_venv("dropdb buddyup-dashboard --if-exists -U skoczen")
