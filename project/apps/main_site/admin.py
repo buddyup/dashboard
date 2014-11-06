@@ -3,9 +3,12 @@ from main_site.models import DataPoint, Milestone
 
 
 class DataPointAdmin(admin.ModelAdmin):
-    list_display = ("recorded_at", "num_total_users", "num_authenticated", 
-                    "num_filled_in_profile", "num_hit_home_page", "num_with_one_class", 
-                    "num_with_one_buddy", "num_attended_one_event", )
+    list_display = (
+        "recorded_at", "num_total_users", "num_active_users", "num_authenticated", 
+        "num_filled_in_profile", "num_hit_home_page", "num_with_one_class", 
+        "num_with_one_buddy", "num_attended_one_event", 
+        "num_buddy_requests", "num_buddies", "buddy_ratio",
+    )
     model = DataPoint
 
 

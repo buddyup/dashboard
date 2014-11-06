@@ -16,12 +16,16 @@ class DataPoint(BaseModel):
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
 
     num_total_users = models.IntegerField()
+    num_active_users = models.IntegerField()
     num_authenticated = models.IntegerField()
     num_filled_in_profile = models.IntegerField()
     num_hit_home_page = models.IntegerField()
     num_with_one_class = models.IntegerField()
     num_with_one_buddy = models.IntegerField()
     num_attended_one_event = models.IntegerField()
+    num_buddy_requests = models.IntegerField()
+    num_buddies = models.IntegerField()
+    buddy_ratio = models.FloatField()
 
     def __unicode__(self):
         return "%s" % self.recorded_at
