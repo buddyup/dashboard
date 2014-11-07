@@ -1,0 +1,18 @@
+<div ng-init="init_dashboard()">
+    {{message}}<br/>
+    Show:
+        <label for="show_events_checkbox"> <input type="checkbox" ng-change="create_combined()" ng-model="show_events" id="show_events_checkbox"> Events</label>
+        <label for="show_code_pushes_checkbox"> <input type="checkbox" ng-change="create_combined()" ng-model="show_code_pushes" id="show_code_pushes_checkbox"> Code Pushes</label>
+
+    <div ng-repeat="point in combined">
+        <span ng-if="point.type == 'data_point'">
+            <i class="fa fa-line-chart"></i> Data Point
+        </span>
+        <span ng-if="point.type == 'code_push'">
+            <i class="fa fa-code"></i> {{point.name}} - {{point.display_date}}
+        </span>
+        <span ng-if="point.type == 'event'">
+            <i class="fa fa-bell"></i> {{point.name}} - {{point.display_date}}
+        </span>
+    </div>
+</div>

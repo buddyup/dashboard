@@ -1,4 +1,5 @@
 import datetime
+import json
 from django.db import models
 
 
@@ -30,6 +31,25 @@ class DataPoint(BaseModel):
     def __unicode__(self):
         return "%s" % self.recorded_at
 
+    @property
+    def json(self):
+        return json.dumps({
+            "recorded_at": int(self.recorded_at.strftime("%s")),
+            "display_date": self.recorded_at.strftime("%B %d %Y %I %p"),
+            "num_total_users": self.num_total_users,
+            "num_active_users": self.num_active_users,
+            "num_authenticated": self.num_authenticated,
+            "num_filled_in_profile": self.num_filled_in_profile,
+            "num_hit_home_page": self.num_hit_home_page,
+            "num_with_one_class": self.num_with_one_class,
+            "num_with_one_buddy": self.num_with_one_buddy,
+            "num_attended_one_event": self.num_attended_one_event,
+            "num_buddy_requests": self.num_buddy_requests,
+            "num_buddies": self.num_buddies,
+            "buddy_ratio": self.buddy_ratio,
+            "type": "data_point",
+        })
+
 class Milestone(BaseModel):
     name = models.CharField(max_length=200)
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
@@ -40,3 +60,12 @@ class Milestone(BaseModel):
 
     def __unicode__(self):
         return "%s" % self.name
+
+    @property
+    def json(self):
+        return json.dumps({
+            "name": self.name,
+            "recorded_at": int(self.recorded_at.strftime("%s")),
+            "display_date": self.recorded_at.strftime("%B %d %Y, %I %p"),
+            "type": self.type,
+        })
