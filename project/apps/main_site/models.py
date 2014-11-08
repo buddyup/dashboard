@@ -34,6 +34,7 @@ class DataPoint(BaseModel):
     @property
     def json(self):
         return json.dumps({
+            "uid": "data_%s" % self.id,
             "recorded_at": int(self.recorded_at.strftime("%s")),
             "display_date": self.recorded_at.strftime("%B %d %Y %I %p"),
             "num_total_users": self.num_total_users,
@@ -64,6 +65,7 @@ class Milestone(BaseModel):
     @property
     def json(self):
         return json.dumps({
+            "uid": "milestone_%s" % self.id,
             "name": self.name,
             "recorded_at": int(self.recorded_at.strftime("%s")),
             "display_date": self.recorded_at.strftime("%B %d %Y, %I %p"),

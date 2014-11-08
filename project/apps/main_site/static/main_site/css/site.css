@@ -11,3 +11,21 @@
     -o-user-select: none;
     user-select: none;
 }
+table { 
+    width: 100%;
+}
+.dashboard_table td.first, .dashboard_table th.first {
+    white-space: nowrap;
+    text-align: left;
+}
+.dashboard_table td.first i {
+    font-size: 20px;
+    color: #777;
+}
+.dashboard_table td, .dashboard_table th {
+    text-align: right;
+    padding: 0px 4px;
+}
+.filters {
+    padding-top: 20px;
+}

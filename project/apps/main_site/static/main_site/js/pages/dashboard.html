@@ -1,18 +1,62 @@
 <div ng-init="init_dashboard()">
-    {{message}}<br/>
-    Show:
-        <label for="show_events_checkbox"> <input type="checkbox" ng-change="create_combined()" ng-model="show_events" id="show_events_checkbox"> Events</label>
-        <label for="show_code_pushes_checkbox"> <input type="checkbox" ng-change="create_combined()" ng-model="show_code_pushes" id="show_code_pushes_checkbox"> Code Pushes</label>
 
-    <div ng-repeat="point in combined">
-        <span ng-if="point.type == 'data_point'">
-            <i class="fa fa-line-chart"></i> Data Point
-        </span>
-        <span ng-if="point.type == 'code_push'">
-            <i class="fa fa-code"></i> {{point.name}} - {{point.display_date}}
-        </span>
-        <span ng-if="point.type == 'event'">
-            <i class="fa fa-bell"></i> {{point.name}} - {{point.display_date}}
-        </span>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">BuddyUp Dashboard</a>
     </div>
+  </div>
+  <div class="filters navbar-form navbar-left">
+    <div class="filter_set">
+        Show:
+        <label for="show_raw_data"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_events_raw_data" value="raw_data"> Raw Data</label>
+        <label for="show_averages"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_averages" value="averages"> Averages</label>
+    </div>
+
+    <div class="filter_set">
+        Milestones:
+        <label for="show_events_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_events" id="show_events_checkbox"> Events</label>
+        <label for="show_code_pushes_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_code_pushes" id="show_code_pushes_checkbox"> Code Pushes</label>
+    </div>
+
+  </div>
+</nav>
+    <table class="dashboard_table">
+    <tr>
+        <th class="first">Date</th>
+        <th>Total users</th>
+        <th>Active users</th>
+        <th>Authenticated</th>
+        <th>Filled in profile</th>
+        <th>Hit home page</th>
+        <th>With one class</th>
+        <th>With one buddy</th>
+        <th>Attended one event</th>
+        <th>Buddy Ratio</th>
+        
+    </tr>
+    <tr ng-repeat="point in display_dataset track by $index">
+        <td ng-if="point.type == 'data_point'" class="first"><i class="fa fa-line-chart"></i> {{point.display_date}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_total_users}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_active_users}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_authenticated}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_filled_in_profile}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_hit_home_page}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_with_one_class}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_with_one_buddy}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_attended_one_event}}</td>
+        <td ng-if="point.type == 'data_point'">{{(point.buddy_ratio*100).toFixed()}}%</td>
+        
+
+        <td ng-if="point.type == 'code_push'" class="first">
+            <i class="fa fa-code"></i> {{point.name}} - {{point.display_date}}
+        </td>
+        <td colspan="99" ng-if="point.type == 'code_push'"></td>
+        <td ng-if="point.type == 'event'" class="first">
+            <i class="fa fa-bell"></i> {{point.name}} - {{point.display_date}}
+        </td>
+        <td colspan="99" ng-if="point.type == 'code_push'"></td>
+    </tr>
+    </table>
 </div>
