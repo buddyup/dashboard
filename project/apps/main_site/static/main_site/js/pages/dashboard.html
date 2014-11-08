@@ -11,7 +11,7 @@
     <div class="filter_set">
         Show:
         <label for="show_raw_data"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_events_raw_data" value="raw_data"> Raw Data</label>
-        <label for="show_averages"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_averages" value="averages"> Averages</label>
+        <label for="show_percentages"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_percentages" value="percentages"> Percentages</label>
     </div>
 
     <div class="filter_set">
@@ -19,6 +19,10 @@
         <label for="show_events_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_events" id="show_events_checkbox"> Events</label>
         <label for="show_code_pushes_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_code_pushes" id="show_code_pushes_checkbox"> Code Pushes</label>
     </div>
+    <div class="filter_set">
+        <label for="show_aggregate"> <input type="checkbox" ng-change="update_display_data()" ng-model="aggregate" id="show_aggregate" > Aggregate Data</label>
+    </div>
+
 
   </div>
 </nav>
@@ -37,26 +41,27 @@
         
     </tr>
     <tr ng-repeat="point in display_dataset track by $index">
-        <td ng-if="point.type == 'data_point'" class="first"><i class="fa fa-line-chart"></i> {{point.display_date}}</td>
+        <td ng-if="point.type == 'data_point'" class="first">&middot; {{point.display_date}}</td>
         <td ng-if="point.type == 'data_point'">{{point.num_total_users}}</td>
-        <td ng-if="point.type == 'data_point'">{{point.num_active_users}}</td>
-        <td ng-if="point.type == 'data_point'">{{point.num_authenticated}}</td>
-        <td ng-if="point.type == 'data_point'">{{point.num_filled_in_profile}}</td>
-        <td ng-if="point.type == 'data_point'">{{point.num_hit_home_page}}</td>
-        <td ng-if="point.type == 'data_point'">{{point.num_with_one_class}}</td>
-        <td ng-if="point.type == 'data_point'">{{point.num_with_one_buddy}}</td>
-        <td ng-if="point.type == 'data_point'">{{point.num_attended_one_event}}</td>
+        <td ng-if="point.type == 'data_point'">{{point.num_active_users}}<span ng-if="sample_type == 'percentages'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_authenticated}}<span ng-if="sample_type == 'percentages'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_filled_in_profile}}<span ng-if="sample_type == 'percentages'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_hit_home_page}}<span ng-if="sample_type == 'percentages'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_with_one_class}}<span ng-if="sample_type == 'percentages'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_with_one_buddy}}<span ng-if="sample_type == 'percentages'">%</span></td>
+        <td ng-if="point.type == 'data_point'">{{point.num_attended_one_event}}<span ng-if="sample_type == 'percentages'">%</span></td>
         <td ng-if="point.type == 'data_point'">{{(point.buddy_ratio*100).toFixed()}}%</td>
         
 
-        <td ng-if="point.type == 'code_push'" class="first">
+        <td ng-if="point.type == 'code_push'" class="first event">
             <i class="fa fa-code"></i> {{point.name}} - {{point.display_date}}
         </td>
-        <td colspan="99" ng-if="point.type == 'code_push'"></td>
-        <td ng-if="point.type == 'event'" class="first">
+        <td colspan="99" ng-if="point.type == 'code_push'" class="event"></td>
+        
+        <td ng-if="point.type == 'event'" class="first event">
             <i class="fa fa-bell"></i> {{point.name}} - {{point.display_date}}
         </td>
-        <td colspan="99" ng-if="point.type == 'code_push'"></td>
+        <td colspan="99" ng-if="point.type == 'event'" class="event"></td>
     </tr>
     </table>
 </div>

@@ -22,10 +22,20 @@ table {
     font-size: 20px;
     color: #777;
 }
+.dashboard_table td.event {
+    background-color: #EEE;
+}
 .dashboard_table td, .dashboard_table th {
     text-align: right;
     padding: 0px 4px;
 }
 .filters {
     padding-top: 20px;
+}
+.filters .filter_set {
+    float: left;
+    margin: 6px 12px;
+}
+.filters .filter_set label {
+    margin-right: 8px
 }
