@@ -5,7 +5,7 @@ buddyupDashboard.config(function($routeProvider) {
 
         // route for the dashboard page
         .when('/', {
-            templateUrl : 'static/main_site/js/pages/dashboard.html',
+            templateUrl : window.STATIC_URL + 'main_site/js/pages/dashboard.html',
             controller  : 'mainController'
         })
 
