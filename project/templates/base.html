@@ -23,6 +23,9 @@
 
   <script src="{{STATIC_URL}}base/js/libs/modernizr-2.0.6.min.js"></script>
   {% analytical_head_bottom %}
+  <script type="text/javascript">
+    window.STATIC_URL = "{{STATIC_URL}}";
+  </script>
 </head>
 
 <body {% block extra_body %}{% endblock %}>
