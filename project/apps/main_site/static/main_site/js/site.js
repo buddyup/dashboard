@@ -1,6 +1,6 @@
 var buddyupDashboard = angular.module('buddyupDashboard', ['ngRoute']);
 
-buddyupDashboard.config(function($routeProvider) {
+buddyupDashboard.config(function($routeProvider, $sceDelegateProvider) {
     $routeProvider
 
         // route for the dashboard page
@@ -8,12 +8,18 @@ buddyupDashboard.config(function($routeProvider) {
             templateUrl : window.STATIC_URL + 'main_site/js/pages/dashboard.html',
             controller  : 'mainController'
         })
-
         // // route for another page
         // .when('/another', {
         //     templateUrl : 'pages/another.html',
         //     controller  : 'anotherController'
         // })
+
+     $sceDelegateProvider.resourceUrlWhitelist([
+        // Allow same origin resource loads.
+        'self',
+        // Allow loading from our assets domain.  Notice the difference between * and **.
+        window.STATIC_URL + '/**'
+    ]);
 });
 
 buddyupDashboard.controller('mainController', function($scope) {
