@@ -51,21 +51,26 @@ def get_data():
         num_users = 0
         page = 0
         print name
-        while not end:
-            print page
+        url = "https://api.intercom.io/users?segment_id=%s&per_page=%s&page=%s" % (key, per_page, page)
+        r = requests.get(url, data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
+        resp = r.json()
+        num_users = resp["total_count"]
+        # while not end:
+        #     print page
 
-            url = "https://api.intercom.io/users?segment_id=%s&per_page=%s&page=%s" % (key, per_page, page)
-            r = requests.get(url, data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
-            resp = r.json()
-
-            if "next" in resp["pages"] and resp["pages"]["next"]:
-                url = resp["pages"]["next"]
-                num_users += per_page
-                page += 1
-            else:
-                for u in r.json()["users"]:
-                    num_users += 1
-                end = True
+            # url = "https://api.intercom.io/users?segment_id=%s&per_page=%s&page=%s" % (key, per_page, page)
+            # r = requests.get(url, data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
+            # resp = r.json()
+            # num_users = 
+            # print resp
+            # if "pages" in resp and "next" in resp["pages"] and resp["pages"]["next"]:
+            #     url = resp["pages"]["next"]
+            #     num_users += per_page
+            #     page += 1
+            # else:
+            #     for u in r.json()["users"]:
+            #         num_users += 1
+            #     end = True
 
         data[name] = num_users
 
@@ -90,7 +95,7 @@ def get_data():
             else:
                 print "Ignoring %s" % (u["email"])
 
-        if "next" in resp["pages"] and resp["pages"]["next"]:
+        if "pages" in resp and "next" in resp["pages"] and resp["pages"]["next"]:
             url = resp["pages"]["next"]
         else:
             end = True
