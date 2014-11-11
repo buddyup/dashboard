@@ -80,25 +80,24 @@ def get_data():
     segment_id = "545b9e6114d10246560000df"
     url = "https://api.intercom.io/users?segment_id=%s&per_page=50&page=%s" % (segment_id, page)
 
-    while not end:
-        r = requests.get(url, data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
-        resp = r.json()
 
+    r = requests.get(url, data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
+    resp = r.json()
+    num_users = resp["total_count"]
+    while page * per_page < num_users:
+        url = "https://api.intercom.io/users?segment_id=%s&per_page=50&page=%s" % (segment_id, page)
+        r = requests.get(url, data=None, headers=headers, auth=('5714bb0i', settings.INTERCOM_API_KEY))
         users = r.json()["users"]
         for u in users:
             # Ignore weird 
             if "num_buddies" in u["custom_attributes"]:
-                num_users += 1
                 num_buddies += int(u["custom_attributes"]["num_buddies"])
                 # TODO: Fix this when we keep it more sanely
                 num_buddy_requests += int(u["custom_attributes"]["num_buddies"]) + int(u["custom_attributes"]["num_sent_requests"])
             else:
                 print "Ignoring %s" % (u["email"])
 
-        if "pages" in resp and "next" in resp["pages"] and resp["pages"]["next"]:
-            url = resp["pages"]["next"]
-        else:
-            end = True
+        page = page + 1
 
     data["num_buddy_requests"] = num_buddy_requests
     data["num_buddies"] = num_buddies
