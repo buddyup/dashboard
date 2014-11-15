@@ -53,15 +53,13 @@
         <td ng-if="point.type == 'data_point'">{{(point.buddy_ratio*100).toFixed()}}%</td>
         
 
-        <td ng-if="point.type == 'code_push'" class="first event">
+        <td colspan="99" ng-if="point.type == 'code_push'" class="first event">
             <i class="fa fa-code"></i> {{point.name}} - {{point.display_date}}
         </td>
-        <td colspan="99" ng-if="point.type == 'code_push'" class="event"></td>
-        
-        <td ng-if="point.type == 'event'" class="first event">
+
+        <td colspan="99" ng-if="point.type == 'event'" class="first event">
             <i class="fa fa-bell"></i> {{point.name}} - {{point.display_date}}
         </td>
-        <td colspan="99" ng-if="point.type == 'event'" class="event"></td>
     </tr>
     </table>
 </div>
