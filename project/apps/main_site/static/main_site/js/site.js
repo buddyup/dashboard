@@ -39,7 +39,6 @@ buddyupDashboard.controller('mainController', function($scope) {
         } else {
             $scope.display_dataset = $scope.combined;
         }
-        console.log($scope.display_dataset)
     }
     $scope.create_combined = function() {
         $scope.combined = [];
@@ -57,7 +56,23 @@ buddyupDashboard.controller('mainController', function($scope) {
                 $scope.combined.push(d);
             }
         } else {
-            $scope.combined = $scope.combined.concat($scope.data_points)
+            if ($scope.sample_type == "funneled") {
+                var d;
+                for (var d_index in $scope.data_points) {
+                    d = angular.copy($scope.data_points[d_index]);
+                    orig = angular.copy($scope.data_points[d_index]);
+                    d["num_active_users"] = (100 * d["num_active_users"] / orig["num_total_users"]).toFixed(0);
+                    d["num_authenticated"] = (100 * d["num_authenticated"] / orig["num_active_users"]).toFixed(0);
+                    d["num_filled_in_profile"] = (100 * d["num_filled_in_profile"] / orig["num_authenticated"]).toFixed(0);
+                    d["num_hit_home_page"] = (100 * d["num_hit_home_page"] / orig["num_filled_in_profile"]).toFixed(0);
+                    d["num_with_one_class"] = (100 * d["num_with_one_class"] / orig["num_hit_home_page"]).toFixed(0);
+                    d["num_with_one_buddy"] = (100 * d["num_with_one_buddy"] / orig["num_with_one_class"]).toFixed(0);
+                    d["num_attended_one_event"] = (100 * d["num_attended_one_event"] / orig["num_with_one_buddy"]).toFixed(0);
+                    $scope.combined.push(d);
+                }
+            } else {
+                $scope.combined = $scope.combined.concat($scope.data_points)
+            }
         }
         var m;
         for (var m_index in $scope.milestones) {
@@ -99,8 +114,6 @@ buddyupDashboard.controller('mainController', function($scope) {
         // Assumes combined has been created.
         for (var m_index in $scope.combined) {
             m = $scope.combined[m_index];
-            console.log("buddy_ratio" + buddy_ratio)
-            console.log("num_samples" + num_samples)
 
             if (m.type == "event" || m.type == "code_push") {
                 buddy_ratio_to_save = buddy_ratio / num_samples.toFixed(0);
@@ -108,9 +121,10 @@ buddyupDashboard.controller('mainController', function($scope) {
                     num_samples = num_samples / 100
                 }
                 if (num_samples > 0) {
-                    $scope.averaged.push({
+                    data = {
                         "type": "data_point",
                         "display_date": start_date + " - " + m.display_date,
+                        "buddy_ratio": (buddy_ratio / num_samples).toFixed(0),
                         "num_total_users": (num_total_users / num_samples).toFixed(0),
                         "num_active_users": (num_active_users / num_samples).toFixed(0),
                         "num_authenticated": (num_authenticated / num_samples).toFixed(0),
@@ -118,40 +132,42 @@ buddyupDashboard.controller('mainController', function($scope) {
                         "num_hit_home_page": (num_hit_home_page / num_samples).toFixed(0),
                         "num_with_one_class": (num_with_one_class / num_samples).toFixed(0),
                         "num_with_one_buddy": (num_with_one_buddy / num_samples).toFixed(0),
-                        "num_attended_one_event": (num_attended_one_event / num_samples).toFixed(0),
-                        "buddy_ratio": buddy_ratio_to_save
-                    });
+                        "num_attended_one_event": (num_attended_one_event / num_samples).toFixed(0)
+                    }
+                    $scope.averaged.push(data);
                 }
                 $scope.averaged.push(m);
                 reset_aggregates();
             } else {
                 num_samples += 1;
                 if ($scope.sample_type == "percentages") {
-                    num_total_users += m.num_total_users / 100;
-                    num_active_users += m.num_active_users / 100;
-                    num_authenticated += m.num_authenticated / 100;
-                    num_filled_in_profile += m.num_filled_in_profile / 100;
-                    num_hit_home_page += m.num_hit_home_page / 100;
-                    num_with_one_class += m.num_with_one_class / 100;
-                    num_with_one_buddy += m.num_with_one_buddy / 100;
-                    num_attended_one_event += m.num_attended_one_event / 100;
+                    num_total_users += 1.0 * m.num_total_users / 100;
+                    num_active_users += 1.0 * m.num_active_users / 100;
+                    num_authenticated += 1.0 * m.num_authenticated / 100;
+                    num_filled_in_profile += 1.0 * m.num_filled_in_profile / 100;
+                    num_hit_home_page += 1.0 * m.num_hit_home_page / 100;
+                    num_with_one_class += 1.0 * m.num_with_one_class / 100;
+                    num_with_one_buddy += 1.0 * m.num_with_one_buddy / 100;
+                    num_attended_one_event += 1.0 * m.num_attended_one_event / 100;
                 } else {
-                    num_total_users += m.num_total_users;
-                    num_active_users += m.num_active_users;
-                    num_authenticated += m.num_authenticated;
-                    num_filled_in_profile += m.num_filled_in_profile;
-                    num_hit_home_page += m.num_hit_home_page;
-                    num_with_one_class += m.num_with_one_class;
-                    num_with_one_buddy += m.num_with_one_buddy;
-                    num_attended_one_event += m.num_attended_one_event;
+                    num_total_users += 1.0 * m.num_total_users;
+                    num_active_users += 1.0 * m.num_active_users;
+                    num_authenticated += 1.0 * m.num_authenticated;
+                    num_filled_in_profile += 1.0 * m.num_filled_in_profile;
+                    num_hit_home_page += 1.0 * m.num_hit_home_page;
+                    num_with_one_class += 1.0 * m.num_with_one_class;
+                    num_with_one_buddy += 1.0 * m.num_with_one_buddy;
+                    num_attended_one_event += 1.0 * m.num_attended_one_event;
                 }
                 buddy_ratio += m.buddy_ratio;
             }
         }
         if (num_samples > 0) {
-            $scope.averaged.push({
+            // TODO: Kill this copypasta!
+            data = {
                 "type": "data_point",
                 "display_date": start_date + " - " + m.display_date,
+                "buddy_ratio": (100 * buddy_ratio / num_samples).toFixed(0),
                 "num_total_users": (num_total_users / num_samples).toFixed(0),
                 "num_active_users": (num_active_users / num_samples).toFixed(0),
                 "num_authenticated": (num_authenticated / num_samples).toFixed(0),
@@ -160,13 +176,14 @@ buddyupDashboard.controller('mainController', function($scope) {
                 "num_with_one_class": (num_with_one_class / num_samples).toFixed(0),
                 "num_with_one_buddy": (num_with_one_buddy / num_samples).toFixed(0),
                 "num_attended_one_event": (num_attended_one_event / num_samples).toFixed(0),
-                "buddy_ratio": (100 * buddy_ratio / num_samples).toFixed(0) + "%"
-            });
+            }
+            $scope.averaged.push(data);
+    
         }
+        reset_aggregates();
         $scope.averaged.sort(sort_events);
     }
 
-    console.log(window.dashboardData)
     $scope.init_dashboard = function() {
         $scope.show_events = true;
         $scope.show_code_pushes = true;

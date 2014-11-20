@@ -1,6 +1,7 @@
 import datetime
 import json
 from django.db import models
+from django.conf import settings
 
 
 MILESTONE_TYPES = [("code_push", "Code Push"), ("event", "Event")]
@@ -55,7 +56,19 @@ class Milestone(BaseModel):
     name = models.CharField(max_length=200)
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
     type = models.CharField(max_length=20, choices=MILESTONE_TYPES)
+    before_pic_1 = models.ImageField(upload_to="before_after", blank=True, null=True)
+    before_pic_2 = models.ImageField(upload_to="before_after", blank=True, null=True)
+    before_pic_3 = models.ImageField(upload_to="before_after", blank=True, null=True)
+    after_pic_1 = models.ImageField(upload_to="before_after", blank=True, null=True)
+    after_pic_2 = models.ImageField(upload_to="before_after", blank=True, null=True)
+    after_pic_3 = models.ImageField(upload_to="before_after", blank=True, null=True)
     
+    def json_picture_url(self, pic):
+        if pic:
+            return "%s" % pic.url
+        else:
+            return ""
+
     class Meta:
         ordering = ("recorded_at",)
 
@@ -70,4 +83,10 @@ class Milestone(BaseModel):
             "recorded_at": int(self.recorded_at.strftime("%s")),
             "display_date": self.recorded_at.strftime("%B %d %Y, %I %p"),
             "type": self.type,
+            "before_pic_1": self.json_picture_url(self.before_pic_1),
+            "before_pic_2": self.json_picture_url(self.before_pic_2),
+            "before_pic_3": self.json_picture_url(self.before_pic_3),
+            "after_pic_1": self.json_picture_url(self.after_pic_1),
+            "after_pic_2": self.json_picture_url(self.after_pic_2),
+            "after_pic_3": self.json_picture_url(self.after_pic_3),
         })

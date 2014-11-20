@@ -39,3 +39,9 @@ table {
 .filters .filter_set label {
     margin-right: 8px
 }
+.event_images {
+    margin: 3px 0 3px 15px;
+}
+.event_images .category {
+    margin: 0 0 0 10px;
+}
