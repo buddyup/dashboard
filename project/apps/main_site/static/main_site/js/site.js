@@ -123,8 +123,8 @@ buddyupDashboard.controller('mainController', function($scope) {
                 if (num_samples > 0) {
                     data = {
                         "type": "data_point",
-                        "display_date": start_date + " - " + m.display_date,
-                        "buddy_ratio": (buddy_ratio / num_samples).toFixed(0),
+                        "display_date": m.display_date + " - " + start_date,
+                        "buddy_ratio": buddy_ratio_to_save,
                         "num_total_users": (num_total_users / num_samples).toFixed(0),
                         "num_active_users": (num_active_users / num_samples).toFixed(0),
                         "num_authenticated": (num_authenticated / num_samples).toFixed(0),
@@ -167,7 +167,7 @@ buddyupDashboard.controller('mainController', function($scope) {
             data = {
                 "type": "data_point",
                 "display_date": start_date + " - " + m.display_date,
-                "buddy_ratio": (100 * buddy_ratio / num_samples).toFixed(0),
+                "buddy_ratio": (buddy_ratio / num_samples).toFixed(0),
                 "num_total_users": (num_total_users / num_samples).toFixed(0),
                 "num_active_users": (num_active_users / num_samples).toFixed(0),
                 "num_authenticated": (num_authenticated / num_samples).toFixed(0),

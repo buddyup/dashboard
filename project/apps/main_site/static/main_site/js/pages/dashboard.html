@@ -42,7 +42,7 @@
         
     </tr>
     <tr ng-repeat="point in display_dataset track by $index">
-        <td ng-if="point.type == 'data_point'" class="first">&middot; {{point.display_date}}</td>
+        <td ng-if="point.type == 'data_point'" class="first">{{point.display_date}}</td>
         <td ng-if="point.type == 'data_point'">{{point.num_total_users}}</td>
         <td ng-if="point.type == 'data_point'">{{point.num_active_users}}<span ng-if="sample_type != 'raw_data'">%</span></td>
         <td ng-if="point.type == 'data_point'">{{point.num_authenticated}}<span ng-if="sample_type != 'raw_data'">%</span></td>
