@@ -46,13 +46,7 @@ iframe {
 .filters {
     padding-top: 20px;
 }
-.filters .filter_set {
-    float: left;
-    margin: 6px 12px;
-}
-.filters .filter_set label {
-    margin-right: 8px
-}
+
 .event_images {
     margin: 3px 0 3px 15px;
 }
