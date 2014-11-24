@@ -92,6 +92,8 @@ class Milestone(BaseModel):
             if getattr(self, p) and not getattr(self, thumb_str):
                 setattr(self, thumb_str, get_thumbnail(getattr(self, p), '80x80', quality=80).name)
                 changed = True
+            else:
+                setattr(self, thumb_str, None)
 
         if changed:
             self.save()
@@ -141,8 +143,10 @@ class Sale(BaseModel):
 
     def save(self, *args, **kwargs):
         super(Sale, self).save(*args, **kwargs)
-        if self.logo and not self.logo_thumb:
+        if self.logo:
             self.logo_thumb = get_thumbnail(self.logo, '120x120', quality=80).name
             self.save()
+        else:
+            self.logo_thumb = None
 
     
