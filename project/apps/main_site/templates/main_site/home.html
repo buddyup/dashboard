@@ -22,6 +22,8 @@ window.dashboardData.milestones.push({{m.json|safe}});{% endfor %}
 {% endblock %}
 
 {% block content %}
-<div ng-view></div>
+<div ng-view>
+    <i class="fa fa-circle-o-notch fa-spin"></i> Loading...
+</div>
 {% endblock %}
 

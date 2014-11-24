@@ -35,3 +35,19 @@ def save_sales(request):
     except:
         import traceback; traceback.print_exc();
         return {'success': False}
+
+
+@login_required
+@render_to("main_site/intercom.html")
+def intercom(request):
+    return locals()
+
+@login_required
+@render_to("main_site/will.html")
+def will(request):
+    return locals()
+
+@login_required
+@render_to("main_site/admin.html")
+def admin(request):
+    return locals()

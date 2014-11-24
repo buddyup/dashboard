@@ -32,13 +32,15 @@
   {% analytical_body_top %}
   {% block nav %}{% endblock %}
   <div id="main" role="main">
-      <div class="container">
+    {% block container %}
+      <div class="main_container container">
           <div class="row">
               <div class="col-xs-12">
               	{% block content %}{% endblock %}
               </div>
           </div>
       </div>
+    {% endblock %}
   </div>
 
   {% block js %}

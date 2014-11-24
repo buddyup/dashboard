@@ -30,6 +30,8 @@ $(function() {
             'steps': 5,
             'speed': 0.2,
             'loose': true,
+            'left': 30,
+            'right': 30,
             'x': window[my_id + "_x"],
             'callback': function(x,y) {
                 drag_stopped(my_id, x, y);
