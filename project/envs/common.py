@@ -180,7 +180,6 @@ COMPRESS_ROOT = STATIC_ROOT
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 GOOGLE_ANALYTICS_PROPERTY_ID = ""
-GAUGES_SITE_ID = ""
 INTERCOM_API_KEY = os.environ["INTERCOM_API_KEY"]
 
 LOGGING = {
