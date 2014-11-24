@@ -90,10 +90,15 @@ class Milestone(BaseModel):
         for p in pics:
             thumb_str = p.replace("pic_", "pic_thumb_")
             if getattr(self, p):
-                print get_thumbnail(getattr(self, p), '80x80', quality=80).name
-                setattr(self, thumb_str, get_thumbnail(getattr(self, p), '80x80', quality=80).name)
+                name = get_thumbnail(getattr(self, p), '80x80', quality=80).name
+                print name
+                if getattr(self, thumb_str) != name:
+                    setattr(self, thumb_str, name)
+                    changed=True
             else:
-                setattr(self, thumb_str, None)
+                if getattr(self, thumb_str):
+                    setattr(self, thumb_str, None)
+                    changed=True
 
         if changed and not resave:
             self.save(resave=True)
