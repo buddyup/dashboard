@@ -1,38 +1,27 @@
-{% extends "base.html" %}{% load compress %}
+{% extends "main_site/base.html" %}{% load compress %}
 {% block extra_html %}ng-app="buddyupDashboard"{% endblock %}
 {% block extra_body %}ng-controller="mainController"{% endblock %}
 
-{% block css %}{{block.super}}
-{% compress css %}
-<link rel="stylesheet" href="{{STATIC_URL}}main_site/css/fonts.css">
-<link rel="stylesheet" href="{{STATIC_URL}}main_site/css/site.css">
-{% endcompress %}
-<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-{% endblock %}
+{% block stats_class %}active{% endblock %}
 
 {% block js %}{{block.super}}
 <script>
 // Import data.
 window.dashboardData = {};
-
 window.dashboardData.data_points = [];
 {% for d in data_points %}
 window.dashboardData.data_points.push({{d.json|safe}});{% endfor %}
-console.log(window.dashboardData.data_points)
-
 window.dashboardData.milestones = [];
 {% for m in milestones %}
 window.dashboardData.milestones.push({{m.json|safe}});{% endfor %}
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
 {% compress js %}
 <script src="{{STATIC_URL}}main_site/js/site.js"></script>
+<script src="{{STATIC_URL}}main_site/js/sales_cycle.js"></script>
 {% endcompress %}
 {% endblock %}
-
 
 {% block content %}
 <div ng-view></div>
 {% endblock %}
+

@@ -11,6 +11,9 @@
     -o-user-select: none;
     user-select: none;
 }
+#main {
+    margin-top: 80px;
+}
 table { 
     width: 100%;
 }

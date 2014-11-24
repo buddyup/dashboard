@@ -1,11 +1,22 @@
 import datetime
 import json
+
 from django.db import models
 from django.conf import settings
+from django.core.files import File
+
+from sorl.thumbnail import get_thumbnail
+
 
 
 MILESTONE_TYPES = [("code_push", "Code Push"), ("event", "Event")]
-
+SALES_CHOICES = [
+    ("0", "Opened"),
+    ("0.25", "Talking"),
+    ("0.5", "Presentation"),
+    ("0.75", "Contract"),
+    ("1", "Closed"),
+]
 
 class BaseModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
@@ -63,6 +74,30 @@ class Milestone(BaseModel):
     after_pic_2 = models.ImageField(upload_to="before_after", blank=True, null=True)
     after_pic_3 = models.ImageField(upload_to="before_after", blank=True, null=True)
     
+    before_pic_thumb_1 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
+    before_pic_thumb_2 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
+    before_pic_thumb_3 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
+    after_pic_thumb_1 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
+    after_pic_thumb_2 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
+    after_pic_thumb_3 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
+    
+    def save(self, *args, **kwargs):
+        pics = [ "before_pic_1", "before_pic_2", "before_pic_3", 
+                 "after_pic_1", "after_pic_2", "after_pic_3",         
+               ]
+        super(Milestone, self).save(*args, **kwargs)
+        changed = False
+        for p in pics:
+            thumb_str = p.replace("pic_", "pic_thumb_")
+            if getattr(self, p) and not getattr(self, thumb_str):
+                setattr(self, thumb_str, get_thumbnail(getattr(self, p), '80x80', quality=80).url)
+                changed = True
+
+        if changed:
+            self.save()
+
+
+
     def json_picture_url(self, pic):
         if pic:
             return "%s" % pic.url
@@ -89,4 +124,25 @@ class Milestone(BaseModel):
             "after_pic_1": self.json_picture_url(self.after_pic_1),
             "after_pic_2": self.json_picture_url(self.after_pic_2),
             "after_pic_3": self.json_picture_url(self.after_pic_3),
+            "before_pic_thumb_1": self.json_picture_url(self.before_pic_thumb_1),
+            "before_pic_thumb_2": self.json_picture_url(self.before_pic_thumb_2),
+            "before_pic_thumb_3": self.json_picture_url(self.before_pic_thumb_3),
+            "after_pic_thumb_1": self.json_picture_url(self.after_pic_thumb_1),
+            "after_pic_thumb_2": self.json_picture_url(self.after_pic_thumb_2),
+            "after_pic_thumb_3": self.json_picture_url(self.after_pic_thumb_3),
         })
+
+class Sale(BaseModel):
+    recorded_at = models.DateTimeField(default=datetime.datetime.now())
+    name = models.CharField(max_length=200)
+    status = models.CharField(max_length=50, choices=SALES_CHOICES)
+    logo = models.ImageField(upload_to="logos", blank=True, null=True)
+    logo_thumb = models.ImageField(upload_to="logos", blank=True, null=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        super(Sale, self).save(*args, **kwargs)
+        if self.logo and not self.logo_thumb:
+            self.logo_thumb = get_thumbnail(self.logo, '120x120', quality=80).url
+            self.save()
+
+    

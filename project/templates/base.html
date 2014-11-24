@@ -9,7 +9,7 @@
 
   <title>{% block title %}{% endblock %}</title>
   <meta name="description" content="{% block description %}{% endblock %}">
-  <meta name="author" content="{% block author %}Steven Skoczen{% endblock %}">
+  <meta name="author" content="{% block author %}BuddyUp{% endblock %}">
 
   <meta name="viewport" content="width=device-width,initial-scale=1">
   {% analytical_head_top %}
@@ -30,22 +30,16 @@
 
 <body {% block extra_body %}{% endblock %}>
   {% analytical_body_top %}
-  <div id="container">
-    <div id="nav">
-        {% block nav %}{% endblock %}
-    </div>
-    <div id="main" role="main">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12">
-    	{% block content %}
-
-    	{% endblock %}
-                </div>
-            </div>
-        </div>
-    </div>
-  </div> 
+  {% block nav %}{% endblock %}
+  <div id="main" role="main">
+      <div class="container">
+          <div class="row">
+              <div class="col-xs-12">
+              	{% block content %}{% endblock %}
+              </div>
+          </div>
+      </div>
+  </div>
 
   {% block js %}
     {% compress js %}

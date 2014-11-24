@@ -1,25 +1,32 @@
-<div ng-init="init_dashboard()">
+<div ng-init="init_sales_cycle()">
 
-<div class="filters row breadcrumb">
-<div class="filter_set col-xs-4">
-    Show:
-    <label for="show_raw_data"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_events_raw_data" value="raw_data"> Raw Data</label>
-    <label for="show_percentages"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_percentages" value="percentages"> Percentages</label>
-    <label for="show_funneled"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_funneled" value="funneled"> Funneled</label>
-</div>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">BuddyUp Dashboard</a>
+    </div>
+  </div>
+  <div class="filters navbar-form navbar-left">
+    <div class="filter_set">
+        Show:
+        <label for="show_raw_data"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_events_raw_data" value="raw_data"> Raw Data</label>
+        <label for="show_percentages"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_percentages" value="percentages"> Percentages</label>
+        <label for="show_funneled"> <input type="radio" ng-change="update_display_data()" ng-model="sample_type" id="show_funneled" value="funneled"> Funneled</label>
+    </div>
 
-<div class="filter_set col-xs-4">
-    Milestones:
-    <label for="show_events_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_events" id="show_events_checkbox"> Events</label>
-    <label for="show_code_pushes_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_code_pushes" id="show_code_pushes_checkbox"> Code Pushes</label>
-</div>
-<div class="filter_set col-xs-2">
-    <label for="show_aggregate"> <input type="checkbox" ng-change="update_display_data()" ng-model="aggregate" id="show_aggregate" > Aggregate Data</label>
-</div>
+    <div class="filter_set">
+        Milestones:
+        <label for="show_events_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_events" id="show_events_checkbox"> Events</label>
+        <label for="show_code_pushes_checkbox"> <input type="checkbox" ng-change="update_display_data()" ng-model="show_code_pushes" id="show_code_pushes_checkbox"> Code Pushes</label>
+    </div>
+    <div class="filter_set">
+        <label for="show_aggregate"> <input type="checkbox" ng-change="update_display_data()" ng-model="aggregate" id="show_aggregate" > Aggregate Data</label>
+    </div>
 
 
-</div>
-
+  </div>
+</nav>
     <table class="dashboard_table">
     <tr>
         <th class="first">Date</th>
@@ -52,15 +59,15 @@
             <div class="event_images" ng-if="point.before_pic_1 || point.before_pic_2 || point.before_pic_3 || point.after_pic_1 || point.after_pic_2 || point.after_pic_3">
                 <span class="category" ng-if="point.before_pic_1 || point.before_pic_2 || point.before_pic_3">
                     Before:
-                    <a ng-if="point.before_pic_1" target="_blank" ng-href="{{ point.before_pic_1 }}"><img ng-src="{{ point.before_pic_thumb_1 }}" /></a>
-                    <a ng-if="point.before_pic_2" target="_blank" ng-href="{{ point.before_pic_2 }}"><img ng-src="{{ point.before_pic_thumb_2 }}" /></a>
-                    <a ng-if="point.before_pic_3" target="_blank" ng-href="{{ point.before_pic_3 }}"><img ng-src="{{ point.before_pic_thumb_3 }}" /></a>
+                    <a ng-if="point.before_pic_1" target="_blank" ng-href="{{ point.before_pic_1 }}">One</a>
+                    <a ng-if="point.before_pic_2" target="_blank" ng-href="{{ point.before_pic_2 }}">Two</a>
+                    <a ng-if="point.before_pic_3" target="_blank" ng-href="{{ point.before_pic_3 }}">Three</a>
                 </span>
                 <span class="category" ng-if="point.after_pic_1 || point.after_pic_2 || point.after_pic_3">
                     After:
-                    <a ng-if="point.after_pic_1" target="_blank" ng-href="{{ point.after_pic_1 }}"><img ng-src="{{ point.after_pic_thumb_1 }}" /></a>
-                    <a ng-if="point.after_pic_2" target="_blank" ng-href="{{ point.after_pic_2 }}"><img ng-src="{{ point.after_pic_thumb_2 }}" /></a>
-                    <a ng-if="point.after_pic_3" target="_blank" ng-href="{{ point.after_pic_3 }}"><img ng-src="{{ point.after_pic_thumb_3 }}" /></a>
+                    <a ng-if="point.after_pic_1" target="_blank" ng-href="{{ point.after_pic_1 }}">One</a>
+                    <a ng-if="point.after_pic_2" target="_blank" ng-href="{{ point.after_pic_2 }}">Two</a>
+                    <a ng-if="point.after_pic_3" target="_blank" ng-href="{{ point.after_pic_3 }}">Three</a>
                 </span>
             </div>
         </td>

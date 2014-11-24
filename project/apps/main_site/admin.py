@@ -1,5 +1,5 @@
 from django.contrib import admin
-from main_site.models import DataPoint, Milestone
+from main_site.models import DataPoint, Milestone, Sale
 
 
 class DataPointAdmin(admin.ModelAdmin):
@@ -16,5 +16,11 @@ class MilestoneAdmin(admin.ModelAdmin):
     list_display = ("name", "recorded_at", "type")
     model = Milestone
 
+
+class SaleAdmin(admin.ModelAdmin):
+    list_display = ("name", "recorded_at", "status")
+    model = Sale
+
 admin.site.register(Milestone, MilestoneAdmin)
 admin.site.register(DataPoint, DataPointAdmin)
+admin.site.register(Sale, SaleAdmin)
