@@ -2,13 +2,6 @@
 {% load url from future %}
 {% load i18n compress %}
 
-{% block js %}{{block.super}}
-{% compress js %}
-<script src="{{STATIC_URL}}main_site/js/password.js"></script>
-{% endcompress %}
-{% endblock %}
-
-
 {% block head_title %}{% trans "Sign up at BuddyUp" %}{% endblock %}
 
 {% block content %}
