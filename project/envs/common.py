@@ -13,12 +13,12 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Steven Skoczen', 'skoczen@gmail.com'),
+    ('Steven Skoczen', 'steven@buddyup.org'),
 )
 
 MANAGERS = ADMINS
 EMAIL_SUBJECT_PREFIX = "[buddyup-dashboard] "
-SERVER_EMAIL = 'skoczen@gmail.com'
+SERVER_EMAIL = 'will@buddyup.com'
 
 DATABASES = {
     'default': {
@@ -37,7 +37,7 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = ["buddyup-dashboard-staging.herokuapp.com", "buddyup-dashboard.herokuapp.com"]
+ALLOWED_HOSTS = ["dashboard.buddyup.org", "buddyup-dashboard-staging.herokuapp.com", "buddyup-dashboard.herokuapp.com"]
 
 TIME_ZONE = 'America/Vancouver'
 
