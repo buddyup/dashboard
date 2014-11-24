@@ -91,7 +91,6 @@ class Milestone(BaseModel):
             thumb_str = p.replace("pic_", "pic_thumb_")
             if getattr(self, p):
                 name = get_thumbnail(getattr(self, p), '80x80', quality=80).name
-                print name
                 if getattr(self, thumb_str) != name:
                     setattr(self, thumb_str, name)
                     changed=True
