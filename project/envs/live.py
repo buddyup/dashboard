@@ -10,7 +10,6 @@ TEMPLATE_DEBUG = DEBUG
 EMAIL_BACKEND = 'django_ses.SESBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 BROKER_URL = os.environ["REDISTOGO_URL"]
-MEDIA_ROOT=''
 
 MEDIA_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = 'https://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME

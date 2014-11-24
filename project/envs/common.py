@@ -37,7 +37,12 @@ CACHES = {
     }
 }
 
-ALLOWED_HOSTS = ["dashboard.buddyup.org", "buddyup-dashboard-staging.herokuapp.com", "buddyup-dashboard.herokuapp.com"]
+ALLOWED_HOSTS = [
+    "dashboard.buddyup.org",
+    "buddyup-dashboard-staging.herokuapp.com",
+    "buddyup-dashboard.herokuapp.com",
+    "buddyup-dashboard.s3.amazonaws.com",
+]
 
 TIME_ZONE = 'America/Vancouver'
 
