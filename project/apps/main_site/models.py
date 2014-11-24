@@ -81,7 +81,7 @@ class Milestone(BaseModel):
     after_pic_thumb_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
     after_pic_thumb_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
     
-    def save(self, *args, **kwargs):
+    def save(self, resave=False, *args, **kwargs):
         pics = [ "before_pic_1", "before_pic_2", "before_pic_3", 
                  "after_pic_1", "after_pic_2", "after_pic_3",         
                ]
@@ -92,12 +92,11 @@ class Milestone(BaseModel):
             if getattr(self, p):
                 print get_thumbnail(getattr(self, p), '80x80', quality=80).name
                 setattr(self, thumb_str, get_thumbnail(getattr(self, p), '80x80', quality=80).name)
-                changed = True
             else:
                 setattr(self, thumb_str, None)
 
-        if changed:
-            self.save()
+        if changed and not resave:
+            self.save(resave=True)
 
 
 
@@ -142,11 +141,12 @@ class Sale(BaseModel):
     logo = models.ImageField(max_length=255, upload_to="logos", blank=True, null=True)
     logo_thumb = models.ImageField(max_length=255, upload_to="logos", blank=True, null=True, editable=False)
 
-    def save(self, *args, **kwargs):
+    def save(self, resave=False, *args, **kwargs):
         super(Sale, self).save(*args, **kwargs)
         if self.logo:
             self.logo_thumb = get_thumbnail(self.logo, '120x120', quality=80).name
-            self.save()
+            if not resave:
+                self.save(resave=True)
         else:
             self.logo_thumb = None
 
