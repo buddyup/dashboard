@@ -90,7 +90,7 @@ class Milestone(BaseModel):
         for p in pics:
             thumb_str = p.replace("pic_", "pic_thumb_")
             if getattr(self, p) and not getattr(self, thumb_str):
-                setattr(self, thumb_str, get_thumbnail(getattr(self, p), '80x80', quality=80).url)
+                setattr(self, thumb_str, get_thumbnail(getattr(self, p), '80x80', quality=80).name)
                 changed = True
 
         if changed:
@@ -142,7 +142,7 @@ class Sale(BaseModel):
     def save(self, *args, **kwargs):
         super(Sale, self).save(*args, **kwargs)
         if self.logo and not self.logo_thumb:
-            self.logo_thumb = get_thumbnail(self.logo, '120x120', quality=80).url
+            self.logo_thumb = get_thumbnail(self.logo, '120x120', quality=80).name
             self.save()
 
     
