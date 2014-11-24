@@ -27,7 +27,6 @@ def save_sales(request):
     try:
         data = json.loads(request.body)
         for sale in data:
-            print sale
             s = Sale.objects.get(pk=sale["pk"])
             s.status = sale["value"]
             s.save()

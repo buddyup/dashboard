@@ -33,7 +33,7 @@ window.save_sales_url = "{% url 'main_site:save_sales' %}";
     <div class="col-xs-10 dragdealer" id="sales_row_{{s.name|lower}}" data-pk="{{s.pk}}">
         <div class="drag_handle handle">
             {% if s.logo_thumb %}
-                <img src="{{s.logo_thumb}}"/>
+                <img src="{{s.logo_thumb.url}}"/>
             {% endif %}
             
         </div>
