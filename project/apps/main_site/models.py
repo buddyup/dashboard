@@ -67,19 +67,19 @@ class Milestone(BaseModel):
     name = models.CharField(max_length=200)
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
     type = models.CharField(max_length=20, choices=MILESTONE_TYPES)
-    before_pic_1 = models.ImageField(upload_to="before_after", blank=True, null=True)
-    before_pic_2 = models.ImageField(upload_to="before_after", blank=True, null=True)
-    before_pic_3 = models.ImageField(upload_to="before_after", blank=True, null=True)
-    after_pic_1 = models.ImageField(upload_to="before_after", blank=True, null=True)
-    after_pic_2 = models.ImageField(upload_to="before_after", blank=True, null=True)
-    after_pic_3 = models.ImageField(upload_to="before_after", blank=True, null=True)
+    before_pic_1 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
+    before_pic_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
+    before_pic_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
+    after_pic_1 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
+    after_pic_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
+    after_pic_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
     
-    before_pic_thumb_1 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
-    before_pic_thumb_2 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
-    before_pic_thumb_3 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
-    after_pic_thumb_1 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
-    after_pic_thumb_2 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
-    after_pic_thumb_3 = models.ImageField(upload_to="before_after", blank=True, null=True, editable=False)
+    before_pic_thumb_1 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
+    before_pic_thumb_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
+    before_pic_thumb_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
+    after_pic_thumb_1 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
+    after_pic_thumb_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
+    after_pic_thumb_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
     
     def save(self, *args, **kwargs):
         pics = [ "before_pic_1", "before_pic_2", "before_pic_3", 
@@ -136,8 +136,8 @@ class Sale(BaseModel):
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
     name = models.CharField(max_length=200)
     status = models.CharField(max_length=50, choices=SALES_CHOICES)
-    logo = models.ImageField(upload_to="logos", blank=True, null=True)
-    logo_thumb = models.ImageField(upload_to="logos", blank=True, null=True, editable=False)
+    logo = models.ImageField(max_length=255, upload_to="logos", blank=True, null=True)
+    logo_thumb = models.ImageField(max_length=255, upload_to="logos", blank=True, null=True, editable=False)
 
     def save(self, *args, **kwargs):
         super(Sale, self).save(*args, **kwargs)
