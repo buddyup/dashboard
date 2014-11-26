@@ -130,13 +130,14 @@ buddyupDashboard.controller('mainController', function($scope) {
             }
             if ($scope.sample_type == "funneled") {
                 // data["num_total_users"] = Math.round(100.0 * data["num_total_users"] / data["num_total_users"]);
-                data["num_active_users"] = Math.round(100.0 * data["num_active_users"] / data["num_total_users"]);
-                data["num_authenticated"] = Math.round(100.0 * data["num_authenticated"] / data["num_active_users"]);
-                data["num_filled_in_profile"] = Math.round(100.0 * data["num_filled_in_profile"] / data["num_authenticated"]);
-                data["num_hit_home_page"] = Math.round(100.0 * data["num_hit_home_page"] / data["num_filled_in_profile"]);
-                data["num_with_one_class"] = Math.round(100.0 * data["num_with_one_class"] / data["num_hit_home_page"]);
-                data["num_with_one_buddy"] = Math.round(100.0 * data["num_with_one_buddy"] / data["num_with_one_class"]);
-                data["num_attended_one_event"] = Math.round(100.0 * data["num_attended_one_event"] / data["num_with_one_buddy"]);
+                var orig = angular.copy(data);
+                data["num_active_users"] = Math.round(100.0 * data["num_active_users"] / orig["num_total_users"]);
+                data["num_authenticated"] = Math.round(100.0 * data["num_authenticated"] / orig["num_active_users"]);
+                data["num_filled_in_profile"] = Math.round(100.0 * data["num_filled_in_profile"] / orig["num_authenticated"]);
+                data["num_hit_home_page"] = Math.round(100.0 * data["num_hit_home_page"] / orig["num_filled_in_profile"]);
+                data["num_with_one_class"] = Math.round(100.0 * data["num_with_one_class"] / orig["num_hit_home_page"]);
+                data["num_with_one_buddy"] = Math.round(100.0 * data["num_with_one_buddy"] / orig["num_with_one_class"]);
+                data["num_attended_one_event"] = Math.round(100.0 * data["num_attended_one_event"] / orig["num_with_one_buddy"]);
             }
             return data;
         }
