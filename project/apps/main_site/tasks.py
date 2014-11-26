@@ -1,8 +1,11 @@
-from celery.task import task, periodic_task
 import datetime
 import requests
+
 from django.conf import settings
-from main_site.models import DataPoint
+from django.core.cache import cache
+from celery.task import task, periodic_task
+
+from main_site.models import DataPoint, Milestone, DASHBOARD_DATA_KEY
 
 
 SEGMENT_MAPPING = {
@@ -104,4 +107,8 @@ def get_data():
     data["buddy_ratio"] = float(num_buddies) / float(num_buddy_requests)
 
     d = DataPoint.objects.create(**data)
+
+    data_points = DataPoint.objects.all()
+    milestones = Milestone.objects.all()
+    cache.set(DASHBOARD_DATA_KEY, render_to_string("main_site/dashboard_data.js", locals()))
 

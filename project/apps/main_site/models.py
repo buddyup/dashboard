@@ -8,7 +8,7 @@ from django.core.files import File
 from sorl.thumbnail import get_thumbnail
 
 
-
+DASHBOARD_DATA_KEY = "BuddyUpDashboardDataJson"
 MILESTONE_TYPES = [("code_push", "Code Push"), ("event", "Event")]
 SALES_CHOICES = [
     ("0", "Opened"),
