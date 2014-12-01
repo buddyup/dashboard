@@ -53,7 +53,6 @@ def save_sales(request):
                             "status": s.get_status_display()
                         })
                     )
-                    print r.status_code
                     assert r.status_code == 200
                 except:
                     import traceback; traceback.print_exc();
