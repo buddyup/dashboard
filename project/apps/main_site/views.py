@@ -1,6 +1,8 @@
 import json
+import requests
 
 from django.core.cache import cache
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 
@@ -34,8 +36,28 @@ def save_sales(request):
         data = json.loads(request.body)
         for sale in data:
             s = Sale.objects.get(pk=sale["pk"])
+            old_status = "%s" % s.status
+
             s.status = sale["value"]
             s.save()
+            
+            if old_status != "%s" % sale["value"]:
+                try:
+                    s = Sale.objects.get(pk=sale["pk"])
+                    headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+                    r = requests.post(
+                        "%s/api/sales-update" % settings.WILL_URL, 
+                        headers=headers, 
+                        data=json.dumps({
+                            "name": s.name,
+                            "status": s.get_status_display()
+                        })
+                    )
+                    print r.status_code
+                    assert r.status_code == 200
+                except:
+                    import traceback; traceback.print_exc();
+                    pass
         return {'success': True}
     except:
         import traceback; traceback.print_exc();

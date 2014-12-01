@@ -154,4 +154,5 @@ class Sale(BaseModel):
         else:
             self.logo_thumb = None
 
-    
+    class Meta:
+        ordering = ("-recorded_at",)
