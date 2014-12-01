@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 
 from annoying.decorators import render_to, ajax_request
 from main_site.models import DataPoint, Milestone, Sale, DASHBOARD_DATA_KEY
-
+from main_site.tasks import update_dashboard_cache
 
 @login_required
 @render_to("main_site/home.html")
@@ -16,7 +16,7 @@ def home(request):
     data_points = DataPoint.objects.all()
     milestones = Milestone.objects.all()
     if not cache.get(DASHBOARD_DATA_KEY):
-        cache.set(DASHBOARD_DATA_KEY, render_to_string("main_site/dashboard_data.js", locals()))
+        update_dashboard_cache()
 
     data_string = cache.get(DASHBOARD_DATA_KEY)
     return locals()

@@ -108,7 +108,10 @@ def get_data():
     data["buddy_ratio"] = float(num_buddies) / float(num_buddy_requests)
 
     d = DataPoint.objects.create(**data)
+    update_dashboard_cache()
 
+@task(name="update_dashboard_cache")
+def update_dashboard_cache():
     data_points = DataPoint.objects.all()
     milestones = Milestone.objects.all()
     cache.set(DASHBOARD_DATA_KEY, render_to_string("main_site/dashboard_data.js", locals()))
