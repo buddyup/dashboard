@@ -3,6 +3,7 @@ import requests
 
 from django.conf import settings
 from django.core.cache import cache
+from django.template.loader import render_to_string
 from celery.task import task, periodic_task
 
 from main_site.models import DataPoint, Milestone, DASHBOARD_DATA_KEY
