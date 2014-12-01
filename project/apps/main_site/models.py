@@ -101,9 +101,10 @@ class Milestone(BaseModel):
 
         if changed and not resave:
             self.save(resave=True)
-            data_points = DataPoint.objects.all()
-            milestones = Milestone.objects.all()
-            cache.set(DASHBOARD_DATA_KEY, render_to_string("main_site/dashboard_data.js", locals()))
+
+        data_points = DataPoint.objects.all()
+        milestones = Milestone.objects.all()
+        cache.set(DASHBOARD_DATA_KEY, render_to_string("main_site/dashboard_data.js", locals()))
 
 
 
