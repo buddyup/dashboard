@@ -7,21 +7,9 @@ test:
     - ./manage.py test --settings=envs.ci
 
 deployment:
-  staging:
+  live:
     branch: master
     commands:
-      - heroku maintenance:on --app buddyupdashboard-staging
-      # - heroku scale celery=0 --app buddyupdashboard-staging
-      - git push git@heroku.com:buddyupdashboard-staging.git $CIRCLE_SHA1:master
-      - heroku run python manage.py syncdb --migrate --settings=envs.live --app buddyupdashboard-staging
-      - heroku restart --app buddyupdashboard-staging
-      - heroku maintenance:off --app buddyupdashboard-staging
-  live:
-    branch: live
-    commands:
-      - heroku maintenance:on --app buddyupdashboard
-      # - heroku scale celery=0 --app buddyupdashboard
-      - git push git@heroku.com:buddyupdashboard.git $CIRCLE_SHA1:master
-      - heroku run python manage.py syncdb --migrate --settings=envs.live --app buddyupdashboard
-      - heroku restart --app buddyupdashboard
-      - heroku maintenance:off --app buddyupdashboard
+      - git push git@heroku.com:buddyup-dashboard.git $CIRCLE_SHA1:master
+      - heroku run python manage.py syncdb --migrate --settings=envs.live --app buddyup-dashboard
+      - heroku restart --app buddyup-dashboard
