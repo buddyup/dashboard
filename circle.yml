@@ -13,3 +13,7 @@ deployment:
       - git push git@heroku.com:buddyup-dashboard.git $CIRCLE_SHA1:master
       - heroku run python manage.py syncdb --migrate --settings=envs.live --app buddyup-dashboard
       - heroku restart --app buddyup-dashboard
+
+notify:
+  webhooks:
+    - url: http://will.buddyup.org/api/circleci/deployed/
