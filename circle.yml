@@ -4,7 +4,8 @@ dependencies:
 
 test:
   override:
-    - ./manage.py test --settings=envs.ci
+    - ./manage.py help --settings=envs.ci -v
+    - ./manage.py test --settings=envs.ci -v
 
 deployment:
   live:
