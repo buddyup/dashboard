@@ -222,7 +222,7 @@ buddyupDashboard.controller('mainController', function($scope) {
         $scope.show_events = true;
         $scope.show_code_pushes = true;
         $scope.aggregate = true;
-        $scope.sample_type = "funneled"
+        $scope.sample_type = "funneled";
 
         $scope.message = 'Hello, world!';
         $scope.data_points = window.dashboardData.data_points;

@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.template.loader import render_to_string
 from celery.task import task, periodic_task
 
-from main_site.models import DataPoint, Milestone, DASHBOARD_DATA_KEY
+from main_site.models import DataPoint, DataPointAggregate, Milestone, DASHBOARD_DATA_KEY
 
 
 SEGMENT_MAPPING = {
@@ -108,11 +108,63 @@ def get_data():
     data["buddy_ratio"] = float(num_buddies) / float(num_buddy_requests)
 
     d = DataPoint.objects.create(**data)
+    update_aggregates()
     update_dashboard_cache()
+
+def update_aggregates():
+    DataPointAggregate.objects.all().delete()
+
+    num_points = 0
+    last_day = -1
+    for d in DataPoint.objects.order_by("recorded_at").all():
+        print d.recorded_at.day
+        if d.recorded_at.day != last_day:
+            if num_points > 0:
+                DataPointAggregate.objects.create(**{
+                    "recorded_at": last_point.recorded_at,
+                    "num_total_users": num_total_users / num_points,
+                    "num_active_users": num_active_users / num_points,
+                    "num_authenticated": num_authenticated / num_points,
+                    "num_filled_in_profile": num_filled_in_profile / num_points,
+                    "num_hit_home_page": num_hit_home_page / num_points,
+                    "num_with_one_class": num_with_one_class / num_points,
+                    "num_with_one_buddy": num_with_one_buddy / num_points,
+                    "num_attended_one_event": num_attended_one_event / num_points,
+                    "num_buddy_requests": num_buddy_requests / num_points,
+                    "num_buddies": num_buddies / num_points,
+                })
+                last_day = last_point.recorded_at.day
+
+            num_total_users = 0
+            num_active_users = 0
+            num_authenticated = 0
+            num_filled_in_profile = 0
+            num_hit_home_page = 0
+            num_with_one_class = 0
+            num_with_one_buddy = 0
+            num_attended_one_event = 0
+            num_buddy_requests = 0
+            num_buddies = 0
+            num_points = 0
+
+        num_total_users += d.num_total_users
+        num_active_users += d.num_active_users
+        num_authenticated += d.num_authenticated
+        num_filled_in_profile += d.num_filled_in_profile
+        num_hit_home_page += d.num_hit_home_page
+        num_with_one_class += d.num_with_one_class
+        num_with_one_buddy += d.num_with_one_buddy
+        num_attended_one_event += d.num_attended_one_event
+        num_buddy_requests += d.num_buddy_requests
+        num_buddies += d.num_buddies
+        last_point = d
+        num_points += 1
+
+
 
 @task(name="update_dashboard_cache")
 def update_dashboard_cache():
-    data_points = DataPoint.objects.all()
+    data_points = DataPointAggregate.objects.all()
     milestones = Milestone.objects.all()
     cache.set(DASHBOARD_DATA_KEY, render_to_string("main_site/dashboard_data.js", locals()))
 
