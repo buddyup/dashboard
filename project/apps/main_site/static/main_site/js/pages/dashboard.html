@@ -31,7 +31,7 @@
         <th>With one class</th>
         <th>With one buddy</th>
         <th>Attended one event</th>
-        <th>Buddy Ratio</th>
+        <!-- <th>Buddy Ratio</th> -->
         
     </tr>
     <tr ng-repeat="point in display_dataset track by $index">
@@ -44,7 +44,7 @@
         <td ng-if="point.type == 'data_point'">{{point.num_with_one_class}}<span ng-if="sample_type != 'raw_data'">%</span></td>
         <td ng-if="point.type == 'data_point'">{{point.num_with_one_buddy}}<span ng-if="sample_type != 'raw_data'">%</span></td>
         <td ng-if="point.type == 'data_point'">{{point.num_attended_one_event}}<span ng-if="sample_type != 'raw_data'">%</span></td>
-        <td ng-if="point.type == 'data_point'">{{(point.buddy_ratio*100).toFixed()}}%</td>
+        <!-- <td ng-if="point.type == 'data_point'">{{(point.buddy_ratio*100).toFixed()}}%</td> -->
         
 
         <td colspan="99" ng-if="point.type == 'code_push' || point.type == 'event'" class="first event">

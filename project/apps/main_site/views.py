@@ -7,13 +7,13 @@ from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 
 from annoying.decorators import render_to, ajax_request
-from main_site.models import DataPoint, Milestone, Sale, DASHBOARD_DATA_KEY
+from main_site.models import DataPoint, DataPointAggregate, Milestone, Sale, DASHBOARD_DATA_KEY
 from main_site.tasks import update_dashboard_cache
 
 @login_required
 @render_to("main_site/home.html")
 def home(request):
-    data_points = DataPoint.objects.all()
+    data_points = DataPointAggregate.objects.all()
     milestones = Milestone.objects.all()
     if not cache.get(DASHBOARD_DATA_KEY):
         update_dashboard_cache()
@@ -26,7 +26,7 @@ def home(request):
 @render_to("main_site/sales_cycle.html")
 def sales_cycle(request):
     sales = Sale.objects.all()
-    
+
     return locals()
 
 @login_required

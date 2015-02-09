@@ -1,11 +1,8 @@
 import datetime
 import json
+from sorl.thumbnail import get_thumbnail
 
 from django.db import models
-from django.conf import settings
-from django.core.files import File
-
-from sorl.thumbnail import get_thumbnail
 
 
 DASHBOARD_DATA_KEY = "BuddyUpDashboardDataJson"
@@ -18,6 +15,7 @@ SALES_CHOICES = [
     ("1", "Closed"),
 ]
 
+
 class BaseModel(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -25,7 +23,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class DataPoint(BaseModel):
+class DataPointAbstraction(BaseModel):
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
 
     num_total_users = models.IntegerField(verbose_name='Total')
@@ -38,7 +36,7 @@ class DataPoint(BaseModel):
     num_attended_one_event = models.IntegerField(verbose_name='Attended an event')
     num_buddy_requests = models.IntegerField(verbose_name='Buddy Requests')
     num_buddies = models.IntegerField(verbose_name='Buddies')
-    buddy_ratio = models.FloatField()
+    buddy_ratio = models.FloatField(default=0)
 
     def __unicode__(self):
         return "%s" % self.recorded_at
@@ -48,7 +46,8 @@ class DataPoint(BaseModel):
         return json.dumps({
             "uid": "data_%s" % self.id,
             "recorded_at": int(self.recorded_at.strftime("%s")),
-            "display_date": self.recorded_at.strftime("%B %d %Y %I %p"),
+            # "display_date": self.recorded_at.strftime("%B %d %Y %I %p"),
+            "display_date": self.recorded_at.strftime("%B %d %Y"),
             "num_total_users": self.num_total_users,
             "num_active_users": self.num_active_users,
             "num_authenticated": self.num_authenticated,
@@ -63,6 +62,18 @@ class DataPoint(BaseModel):
             "type": "data_point",
         })
 
+    class Meta:
+        abstract = True
+
+
+class DataPoint(DataPointAbstraction):
+    pass
+
+
+class DataPointAggregate(DataPointAbstraction):
+    pass
+
+
 class Milestone(BaseModel):
     name = models.CharField(max_length=200)
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
@@ -73,18 +84,30 @@ class Milestone(BaseModel):
     after_pic_1 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
     after_pic_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
     after_pic_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True)
-    
-    before_pic_thumb_1 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
-    before_pic_thumb_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
-    before_pic_thumb_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
-    after_pic_thumb_1 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
-    after_pic_thumb_2 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
-    after_pic_thumb_3 = models.ImageField(max_length=255, upload_to="before_after", blank=True, null=True, editable=False)
-    
+
+    before_pic_thumb_1 = models.ImageField(max_length=255, upload_to="before_after",
+                                           blank=True, null=True, editable=False
+                                           )
+    before_pic_thumb_2 = models.ImageField(max_length=255, upload_to="before_after",
+                                           blank=True, null=True, editable=False
+                                           )
+    before_pic_thumb_3 = models.ImageField(max_length=255, upload_to="before_after",
+                                           blank=True, null=True, editable=False
+                                           )
+    after_pic_thumb_1 = models.ImageField(max_length=255, upload_to="before_after",
+                                          blank=True, null=True, editable=False
+                                          )
+    after_pic_thumb_2 = models.ImageField(max_length=255, upload_to="before_after",
+                                          blank=True, null=True, editable=False
+                                          )
+    after_pic_thumb_3 = models.ImageField(max_length=255, upload_to="before_after",
+                                          blank=True, null=True, editable=False
+                                          )
+
     def save(self, resave=False, *args, **kwargs):
-        pics = [ "before_pic_1", "before_pic_2", "before_pic_3", 
-                 "after_pic_1", "after_pic_2", "after_pic_3",         
-               ]
+        pics = ["before_pic_1", "before_pic_2", "before_pic_3",
+                "after_pic_1", "after_pic_2", "after_pic_3",
+                ]
         super(Milestone, self).save(*args, **kwargs)
         changed = False
         for p in pics:
@@ -93,18 +116,17 @@ class Milestone(BaseModel):
                 name = get_thumbnail(getattr(self, p), '80x80', quality=80).name
                 if getattr(self, thumb_str) != name:
                     setattr(self, thumb_str, name)
-                    changed=True
+                    changed = True
             else:
                 if getattr(self, thumb_str):
                     setattr(self, thumb_str, None)
-                    changed=True
+                    changed = True
 
         if changed and not resave:
             self.save(resave=True)
 
         from main_site.tasks import update_dashboard_cache
         update_dashboard_cache.delay()
-
 
     def json_picture_url(self, pic):
         if pic:
@@ -124,7 +146,8 @@ class Milestone(BaseModel):
             "uid": "milestone_%s" % self.id,
             "name": self.name,
             "recorded_at": int(self.recorded_at.strftime("%s")),
-            "display_date": self.recorded_at.strftime("%B %d %Y, %I %p"),
+            # "display_date": self.recorded_at.strftime("%B %d %Y, %I %p"),
+            "display_date": self.recorded_at.strftime("%B %d %Y"),
             "type": self.type,
             "before_pic_1": self.json_picture_url(self.before_pic_1),
             "before_pic_2": self.json_picture_url(self.before_pic_2),
@@ -139,6 +162,7 @@ class Milestone(BaseModel):
             "after_pic_thumb_2": self.json_picture_url(self.after_pic_thumb_2),
             "after_pic_thumb_3": self.json_picture_url(self.after_pic_thumb_3),
         })
+
 
 class Sale(BaseModel):
     recorded_at = models.DateTimeField(default=datetime.datetime.now())
